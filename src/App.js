@@ -1,22 +1,44 @@
 import React, { Component } from 'react';
 import './App.css';
 import { objTreeSameProps } from './exemplaryObjects';
-import { findAll } from 'obj-traverse/lib/obj-traverse';
-let lib = require('obj-traverse/lib/obj-traverse')
+import { findAndModifyAll } from 'obj-traverse/lib/obj-traverse';
 
 
 class App extends Component {
 
   constructor() {
     super();
+    this.handleFindObjKeyChange = this.handleFindObjKeyChange.bind(this);
+    this.handleFindObjValueChange = this.handleFindObjValueChange.bind(this);
+    this.handleReplacementObjChange = this.handleReplacementObjChange.bind(this);
+    this.handleButtonClick = this.handleButtonClick.bind(this);
     this.state = {
-      obj: objTreeSameProps
+      obj: objTreeSameProps,
+      objToFindByKey: '',
+      objToFindByValue: '',
+      replacementObj: ''
     };
   }
 
-  componentDidMount() {
-    console.log(findAll);
-    console.log(lib);
+  handleFindObjKeyChange(event) {
+    this.setState({ objToFindByKey: event.target.value });
+  }
+
+  handleFindObjValueChange(event) {
+    this.setState({ objToFindByValue: event.target.value });
+  }
+
+  handleReplacementObjChange(event) {
+    this.setState({ replacementObj: event.target.value });
+  }
+
+  handleButtonClick() {
+    let objToFindBy = {};
+    objToFindBy[this.state.objToFindByKey] = this.state.objToFindByValue;
+    //let replacementObj = JSON.parse(this.state.replacementObj);
+    let newObj = Object.assign ({}, this.state.obj);
+    findAndModifyAll(newObj, 'children', objToFindBy, {aaa: 'aa'});
+    this.setState({ obj: newObj });
   }
 
   generateObjToDisplay(obj) {
@@ -52,8 +74,13 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        {this.generateObjToDisplay(this.state.obj)}
+        <span>let obj = </span>{this.generateObjToDisplay(this.state.obj)}
+        objToFindBy key<input value={this.state.objToFindByKey} onChange={this.handleFindObjKeyChange} />
+        objToFindBy value<input value={this.state.objToFindByValue} onChange={this.handleFindObjValueChange} />
+        replacementObj<input value={this.state.replacementObj} onChange={this.handleReplacementObjChange} />
+        <button type='button' onClick={this.handleButtonClick}>Check!</button>
       </div>
+
     );
   }
 }
