@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import { objTreeSameProps } from './exemplaryObjects';
 import * as objTraverse  from 'obj-traverse/lib/obj-traverse';
+import descriptions from './methodDescriptions';
 
 
 class App extends Component {
@@ -109,7 +110,7 @@ class App extends Component {
   render() {
     return (
       <div className="ui center aligned grid ">
-        <div className='ui fourteen wide left aligned column'>
+        <div className='ui fourteen wide left aligned column ui segment ob-app'>
           <div className='ui grid'>
             <section className='six wide column'>
               <span>let <span style={this.state.treeStyle}>tree</span> = </span>{this.generateObjToDisplay(this.state.obj)}
@@ -155,11 +156,21 @@ class App extends Component {
                       <span>)</span>
                   }
                 </div>
+                <div className="ui info icon message">
+                  <i className="info icon"></i>
+                  <div className="content">
+                    <div className="header">
+                      <p>{descriptions[this.state.methodNames[this.state.chosenMethod]][0]}</p><br/>
+                      Method description
+                    </div>
+                    <p>{descriptions[this.state.methodNames[this.state.chosenMethod]][1]}</p>
+                  </div>
+                </div>
                 <div className='field'>
-                  <button type='button' onClick={this.handleButtonClick} className='ui blue button'>Check!</button>
+                  <button type='button' onClick={this.handleButtonClick} className='ui blue button ob-check'>Check!</button>
                 </div>
               </div>
-              <div className="ui info message">
+              <div className="ui warning message">
                 check out console to see what the method returned
               </div>
             </section>
