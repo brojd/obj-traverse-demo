@@ -18,7 +18,13 @@ class App extends Component {
       objToFindByKey: '',
       objToFindByValue: '',
       replacementObjKey: '',
-      replacementObjValue: ''
+      replacementObjValue: '',
+      treeStyle: {
+        backgroundColor: 'yellow'
+      },
+      childrenStyle: {
+        backgroundColor: '#6bffff'
+      }
     };
   }
 
@@ -61,7 +67,7 @@ class App extends Component {
           <div style={indentBig}>
             {Object.keys(obj).map((prop, index) => prop === 'children' ?
               <div key={index}>
-                children: [
+                <span style={this.state.childrenStyle}>children</span>: [
                   {obj[prop].map((child, index) =>
                     <div key={index}>
                       <div style={indentBig}>
@@ -84,7 +90,7 @@ class App extends Component {
         <div className='ui fourteen wide left aligned column'>
           <div className='ui grid'>
             <section className='six wide column'>
-              <span>let obj = </span>{this.generateObjToDisplay(this.state.obj)}
+              <span>let <span style={this.state.treeStyle}>tree</span> = </span>{this.generateObjToDisplay(this.state.obj)}
             </section>
             <section className='six wide column'>
               <div className='ui form'>
@@ -105,7 +111,8 @@ class App extends Component {
                   <input value={this.state.replacementObjValue} onChange={this.handleReplacementObjValueChange} />
                 </div>
                 <div className='ui center aligned segment ot-funcPreview'>
-                  findAndModifyAll(obj, 'children',
+                  findAndModifyAll(<span style={this.state.treeStyle}>tree</span>,
+                  '<span style={this.state.childrenStyle}>children</span>',
                   {`{ ${this.state.objToFindByKey}: ${this.state.objToFindByValue} }, `}
                   {`{ ${this.state.replacementObjKey}: ${this.state.replacementObjValue} })`}
                 </div>
@@ -117,7 +124,6 @@ class App extends Component {
           </div>
         </div>
       </div>
-
     );
   }
 }
