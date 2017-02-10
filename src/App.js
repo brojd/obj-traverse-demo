@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import { objTreeSameProps } from './exemplaryObjects';
-import { findAndModifyAll } from 'obj-traverse/lib/obj-traverse';
+import * as objTraverse  from 'obj-traverse/lib/obj-traverse';
 
 
 class App extends Component {
@@ -12,6 +12,7 @@ class App extends Component {
     this.handleFindObjValueChange = this.handleFindObjValueChange.bind(this);
     this.handleReplacementObjKeyChange = this.handleReplacementObjKeyChange.bind(this);
     this.handleReplacementObjValueChange = this.handleReplacementObjValueChange.bind(this);
+    this.handleMethodChange = this.handleMethodChange.bind(this);
     this.handleButtonClick = this.handleButtonClick.bind(this);
     this.state = {
       obj: objTreeSameProps,
@@ -19,12 +20,17 @@ class App extends Component {
       objToFindByValue: '',
       replacementObjKey: '',
       replacementObjValue: '',
+      replacementObjVisible: false,
+      chosenMethod: 0,
       treeStyle: {
         backgroundColor: 'yellow'
       },
       childrenStyle: {
         backgroundColor: '#6bffff'
-      }
+      },
+      methodNames: ['findFirst', 'findAll', 'findAndModifyFirst',
+        'findAndModifyAll', 'findAndDeleteFirst', 'findAndDeleteAll'],
+      result: ''
     };
   }
 
@@ -43,14 +49,30 @@ class App extends Component {
   handleReplacementObjValueChange(event) {
     this.setState({ replacementObjValue: event.target.value });
   }
+  
+  handleMethodChange(event) {
+    [2, 3].includes(Number(event.target.value)) ?
+      this.setState({
+        chosenMethod: event.target.value,
+        replacementObjVisible: true
+      }) :
+      this.setState({
+        chosenMethod: event.target.value,
+        replacementObjVisible: false
+      });
+  }
 
   handleButtonClick() {
+    const currentMethod = objTraverse[this.state.methodNames[this.state.chosenMethod]];
+    let result;
     let objToFindBy = {};
     let replacementObj = {};
     objToFindBy[this.state.objToFindByKey] = this.state.objToFindByValue;
     replacementObj[this.state.replacementObjKey] = this.state.replacementObjValue;
     let newObj = Object.assign ({}, this.state.obj);
-    findAndModifyAll(newObj, 'children', objToFindBy, replacementObj);
+    this.state.replacementObjVisible ? result = currentMethod(newObj, 'children', objToFindBy, replacementObj) :
+      result = currentMethod(newObj, 'children', objToFindBy);
+    console.log(result);
     this.setState({ obj: newObj });
   }
 
@@ -102,23 +124,43 @@ class App extends Component {
                   <label>objToFindBy value</label>
                   <input value={this.state.objToFindByValue} onChange={this.handleFindObjValueChange} />
                 </div>
+                {this.state.replacementObjVisible ?
+                  <div>
+                    <div className='field'>
+                      <label>replacementObj key</label>
+                      <input value={this.state.replacementObjKey} onChange={this.handleReplacementObjKeyChange} />
+                    </div>
+                    <div className='field'>
+                      <label>replacementObj value</label>
+                      <input value={this.state.replacementObjValue} onChange={this.handleReplacementObjValueChange} />
+                    </div>
+                  </div> :
+                  null
+                }
                 <div className='field'>
-                  <label>replacementObj key</label>
-                  <input value={this.state.replacementObjKey} onChange={this.handleReplacementObjKeyChange} />
-                </div>
-                <div className='field'>
-                  <label>replacementObj value</label>
-                  <input value={this.state.replacementObjValue} onChange={this.handleReplacementObjValueChange} />
+                  <label>Choose method</label>
+                  <select value={this.state.chosenMethod} onChange={this.handleMethodChange}>
+                    {this.state.methodNames.map((method, index) => (
+                      <option value={index} label={method} key={index}></option>
+                    ))}
+                  </select>
                 </div>
                 <div className='ui center aligned segment ot-funcPreview'>
-                  findAndModifyAll(<span style={this.state.treeStyle}>tree</span>,
+                  {this.state.methodNames[this.state.chosenMethod]}(<span style={this.state.treeStyle}>tree</span>,
                   '<span style={this.state.childrenStyle}>children</span>',
-                  {`{ ${this.state.objToFindByKey}: ${this.state.objToFindByValue} }, `}
-                  {`{ ${this.state.replacementObjKey}: ${this.state.replacementObjValue} })`}
+                  {`{ ${this.state.objToFindByKey}: ${this.state.objToFindByValue} }`}
+                  {
+                    this.state.replacementObjVisible ?
+                      <span>{`, { ${this.state.replacementObjKey}: ${this.state.replacementObjValue} })`}</span> :
+                      <span>)</span>
+                  }
                 </div>
                 <div className='field'>
                   <button type='button' onClick={this.handleButtonClick} className='ui blue button'>Check!</button>
                 </div>
+              </div>
+              <div className="ui info message">
+                check out console to see what the method returned
               </div>
             </section>
           </div>
