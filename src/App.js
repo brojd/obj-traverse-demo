@@ -113,9 +113,11 @@ class App extends Component {
         <div className='ui fourteen wide left aligned column ui segment ob-app'>
           <div className='ui grid'>
             <section className='six wide column'>
-              <span>let <span style={this.state.treeStyle}>tree</span> = </span>{this.generateObjToDisplay(this.state.obj)}
+              <div className="ob-object">
+                <span>let <span style={this.state.treeStyle}>tree</span> = </span>{this.generateObjToDisplay(this.state.obj)}
+              </div>
             </section>
-            <section className='six wide column'>
+            <section className='ten wide column'>
               <div className='ui form'>
                 <div className='field'>
                   <label>objToFindBy key</label>
@@ -146,15 +148,17 @@ class App extends Component {
                     ))}
                   </select>
                 </div>
-                <div className='ui center aligned segment ot-funcPreview'>
-                  {this.state.methodNames[this.state.chosenMethod]}(<span style={this.state.treeStyle}>tree</span>,
-                  '<span style={this.state.childrenStyle}>children</span>',
-                  {`{ ${this.state.objToFindByKey}: ${this.state.objToFindByValue} }`}
-                  {
-                    this.state.replacementObjVisible ?
-                      <span>{`, { ${this.state.replacementObjKey}: ${this.state.replacementObjValue} })`}</span> :
-                      <span>)</span>
-                  }
+                <div className='ui center aligned segment'>
+                  <div className='ob-funcPreview'>
+                    {this.state.methodNames[this.state.chosenMethod]} ( <span style={this.state.treeStyle}>tree</span>,
+                    '<span style={this.state.childrenStyle}>children</span>',
+                    {` { ${this.state.objToFindByKey}: ${this.state.objToFindByValue} }`}
+                    {
+                      this.state.replacementObjVisible ?
+                        <span>{`, { ${this.state.replacementObjKey}: ${this.state.replacementObjValue} })`}</span> :
+                        <span> )</span>
+                    }
+                  </div>
                 </div>
                 <div className="ui info icon message">
                   <i className="info icon"></i>
