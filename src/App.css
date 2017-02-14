@@ -1,3 +1,7 @@
+.ob-app {
+    margin-top:40px;
+}
+
 .ob-check {
     margin: 0 auto !important;
     display: block !important;
@@ -6,10 +10,6 @@
 
 .ob-object {
     font-size: 17px;
-}
-
-.ob-app {
-    margin: 50px 0 !important;
 }
 
 .ob-funcPreview {

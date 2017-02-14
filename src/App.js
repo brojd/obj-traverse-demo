@@ -109,75 +109,77 @@ class App extends Component {
 
   render() {
     return (
-      <div className="ui center aligned grid ">
-        <div className='ui fourteen wide left aligned column ui segment ob-app'>
-          <div className='ui grid'>
-            <section className='six wide column'>
-              <div className="ob-object">
-                <span>let <span style={this.state.treeStyle}>tree</span> = </span>{this.generateObjToDisplay(this.state.obj)}
-              </div>
-            </section>
-            <section className='ten wide column'>
-              <div className='ui form'>
-                <div className='field'>
-                  <label>objToFindBy key</label>
-                  <input value={this.state.objToFindByKey} onChange={this.handleFindObjKeyChange} />
+      <div className="ob-app">
+        <div className="ui center aligned grid ">
+          <div className='ui center aligned segment'>
+            <div className='ob-funcPreview'>
+              {this.state.methodNames[this.state.chosenMethod]} ( <span style={this.state.treeStyle}>tree</span>,
+              '<span style={this.state.childrenStyle}>children</span>',
+              {` { ${this.state.objToFindByKey}: ${this.state.objToFindByValue} }`}
+              {
+                this.state.replacementObjVisible ?
+                  <span>{`, { ${this.state.replacementObjKey}: ${this.state.replacementObjValue} })`}</span> :
+                  <span> )</span>
+              }
+            </div>
+          </div>
+          <div className='ui fourteen wide left aligned column ui segment'>
+            <div className='ui grid'>
+              <section className='six wide column'>
+                <div className="ob-object">
+                  <span>let <span style={this.state.treeStyle}>tree</span> = </span>{this.generateObjToDisplay(this.state.obj)}
                 </div>
-                <div className='field'>
-                  <label>objToFindBy value</label>
-                  <input value={this.state.objToFindByValue} onChange={this.handleFindObjValueChange} />
-                </div>
-                {this.state.replacementObjVisible ?
-                  <div>
-                    <div className='field'>
-                      <label>replacementObj key</label>
-                      <input value={this.state.replacementObjKey} onChange={this.handleReplacementObjKeyChange} />
+              </section>
+              <section className='seven wide column'>
+                <div className='ui form'>
+                  <div className='field'>
+                    <label>objToFindBy key</label>
+                    <input value={this.state.objToFindByKey} onChange={this.handleFindObjKeyChange} />
+                  </div>
+                  <div className='field'>
+                    <label>objToFindBy value</label>
+                    <input value={this.state.objToFindByValue} onChange={this.handleFindObjValueChange} />
+                  </div>
+                  {this.state.replacementObjVisible ?
+                    <div>
+                      <div className='field'>
+                        <label>replacementObj key</label>
+                        <input value={this.state.replacementObjKey} onChange={this.handleReplacementObjKeyChange} />
+                      </div>
+                      <div className='field'>
+                        <label>replacementObj value</label>
+                        <input value={this.state.replacementObjValue} onChange={this.handleReplacementObjValueChange} />
+                      </div>
+                    </div> :
+                    null
+                  }
+                  <div className='field'>
+                    <label>Choose method</label>
+                    <select value={this.state.chosenMethod} onChange={this.handleMethodChange}>
+                      {this.state.methodNames.map((method, index) => (
+                        <option value={index} label={method} key={index}></option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="ui info icon message">
+                    <i className="info icon"></i>
+                    <div className="content">
+                      <div className="header">
+                        <p>{descriptions[this.state.methodNames[this.state.chosenMethod]][0]}</p><br/>
+                        Method description
+                      </div>
+                      <p>{descriptions[this.state.methodNames[this.state.chosenMethod]][1]}</p>
                     </div>
-                    <div className='field'>
-                      <label>replacementObj value</label>
-                      <input value={this.state.replacementObjValue} onChange={this.handleReplacementObjValueChange} />
-                    </div>
-                  </div> :
-                  null
-                }
-                <div className='field'>
-                  <label>Choose method</label>
-                  <select value={this.state.chosenMethod} onChange={this.handleMethodChange}>
-                    {this.state.methodNames.map((method, index) => (
-                      <option value={index} label={method} key={index}></option>
-                    ))}
-                  </select>
-                </div>
-                <div className='ui center aligned segment'>
-                  <div className='ob-funcPreview'>
-                    {this.state.methodNames[this.state.chosenMethod]} ( <span style={this.state.treeStyle}>tree</span>,
-                    '<span style={this.state.childrenStyle}>children</span>',
-                    {` { ${this.state.objToFindByKey}: ${this.state.objToFindByValue} }`}
-                    {
-                      this.state.replacementObjVisible ?
-                        <span>{`, { ${this.state.replacementObjKey}: ${this.state.replacementObjValue} })`}</span> :
-                        <span> )</span>
-                    }
+                  </div>
+                  <div className='field'>
+                    <button type='button' onClick={this.handleButtonClick} className='ui blue button ob-check'>Check!</button>
                   </div>
                 </div>
-                <div className="ui info icon message">
-                  <i className="info icon"></i>
-                  <div className="content">
-                    <div className="header">
-                      <p>{descriptions[this.state.methodNames[this.state.chosenMethod]][0]}</p><br/>
-                      Method description
-                    </div>
-                    <p>{descriptions[this.state.methodNames[this.state.chosenMethod]][1]}</p>
-                  </div>
+                <div className="ui warning message">
+                  check out console to see what the method returned
                 </div>
-                <div className='field'>
-                  <button type='button' onClick={this.handleButtonClick} className='ui blue button ob-check'>Check!</button>
-                </div>
-              </div>
-              <div className="ui warning message">
-                check out console to see what the method returned
-              </div>
-            </section>
+              </section>
+            </div>
           </div>
         </div>
       </div>
